@@ -1,11 +1,14 @@
 import { useEffect, useRef } from 'react';
 import RotatingBackground from './RotatingBackground';
+import GlowEffect from '../ui/GlowEffect';
 
 const SpaceBackground = ({ 
   speedFactor = 0.05, 
   starColor = [255, 255, 255], 
   starCount = 5000,
-  rotatingBgProps = {} // Allow customization of rotating background
+  rotatingBgProps = {},
+  showGlowEffect = true,
+  glowIntensity = 'medium'
 } = {}) => {
   const canvasRef = useRef(null);
 
@@ -125,6 +128,14 @@ const SpaceBackground = ({
         {...rotatingBgProps}
       />
       
+      {/* Glowing Effect Layer - Middle Layer */}
+      {showGlowEffect && (
+        <GlowEffect 
+          intensity={glowIntensity}
+          className="z-0"
+        />
+      )}
+      
       {/* Moving Starfield Canvas - Top Layer */}
       <canvas 
         ref={canvasRef} 
@@ -133,13 +144,9 @@ const SpaceBackground = ({
           pointerEvents: 'none',
           mixBlendMode: 'screen',
           backgroundColor: 'transparent',
-          zIndex: 1 // Ensure stars are above sliding background
+          zIndex: 1 // Ensure stars are above everything
         }}
       ></canvas>
-      
-      {/* Additional glow effects */}
-      {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div> */}
     </div>
   );
 };
